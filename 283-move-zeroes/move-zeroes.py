@@ -5,9 +5,6 @@ class Solution:
         """
         left = 0
         for i in range(len(nums)):
-            if nums[left] == 0:
-                if nums[i] != 0:
-                    nums[left] = nums[i]
-                    nums[i] = 0
-                    left +=1
-            else: left += 1
+            if nums[i] != 0:
+                nums[left], nums[i] = nums[i], nums[left]
+                left +=1
