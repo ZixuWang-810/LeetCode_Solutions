@@ -4,9 +4,9 @@ class Solution:
         left, right = 1, x
         while left <= right:
             mid = left + (right - left)// 2
-            if mid **2 == x:
+            if mid  == x / mid:
                 return mid
-            elif mid ** 2 < x:
+            elif mid < x / mid:
                 left = mid + 1
             else:
                 right = mid - 1
