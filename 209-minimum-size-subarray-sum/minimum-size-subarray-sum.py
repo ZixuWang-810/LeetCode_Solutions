@@ -8,4 +8,3 @@ class Solution:
                 sums -= nums[left]
                 left += 1
         return m_l if m_l != inf else 0
-
