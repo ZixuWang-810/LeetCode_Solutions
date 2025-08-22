@@ -18,5 +18,3 @@ class Solution:
                 prev = prev.next
             cur = cur.next
         return dummy.next
-            
-            
