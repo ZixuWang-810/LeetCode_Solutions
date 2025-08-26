@@ -1,5 +1,6 @@
-# Write your MySQL query statement below
-select e1.name AS Employee
-from employee e1
-inner join employee e2 on e1.managerId = e2.id
-where e1.salary > e2.salary
+-- Write your PostgreSQL query statement below
+SELECT e1.name AS "Employee"
+FROM Employee e1
+INNER JOIN Employee e2
+ON e1.managerId = e2.id
+WHERE e2.salary < e1.salary
