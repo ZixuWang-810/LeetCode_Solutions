@@ -1,13 +1,11 @@
 -- Write your PostgreSQL query statement below
-SELECT 
-    name 
+SELECT name
 FROM SalesPerson
-WHERE sales_id NOT IN (
-    SELECT DISTINCT sales_id
-    FROM Orders
-    WHERE com_id IN(
-        SELECT com_id
-        FROM Company
-        WHERE name = 'RED'
-    )
+WHERE sales_id NOT IN(
+    SELECT o.sales_id
+    FROM Orders o
+    JOIN Company c
+    ON o.com_id = c.com_id
+    GROUP BY o.sales_id, c.name
+    HAVING c.name = 'RED'
 )
