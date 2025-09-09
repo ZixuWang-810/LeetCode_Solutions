@@ -1,5 +1,8 @@
 -- Write your PostgreSQL query statement below
-select 
-    score, 
-    dense_rank() over (order by score desc) rank 
-from scores;
+SELECT 
+    score,
+    dense_rank() OVER (
+        ORDER BY 
+            score DESC
+    ) AS rank
+FROM Scores
