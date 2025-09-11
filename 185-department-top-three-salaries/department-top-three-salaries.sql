@@ -8,8 +8,8 @@ LEFT JOIN Department d
     ON d.id = e.departmentId
 WHERE e.salary IN (
     SELECT DISTINCT salary
-    FROM Employee e2
-    WHERE e2.departmentId = e.departmentId 
-    ORDER BY e2.salary DESC
+    FROM Employee
+    WHERE Employee.departmentId = d.id 
+    ORDER BY salary DESC
     LIMIT 3
 )
