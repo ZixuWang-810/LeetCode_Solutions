@@ -1,8 +1,10 @@
 -- Write your PostgreSQL query statement below
-SELECT p.product_id, p.product_name
+SELECT
+    p.product_id,
+    p.product_name
 FROM Product p
-JOIN Sales s
+LEFT JOIN Sales s
 ON p.product_id = s.product_id
 GROUP BY p.product_id, p.product_name
-HAVING MIN(s.sale_date) >= '2019-01-01'
-AND MAX(s.sale_date) <= '2019-03-31'
+HAVING MAX(sale_date) <= '2019-03-31'
+AND MIN(sale_date) >= '2019-01-01'
