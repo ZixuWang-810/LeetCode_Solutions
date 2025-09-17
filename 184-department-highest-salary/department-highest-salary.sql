@@ -1,16 +1,10 @@
 -- Write your PostgreSQL query statement below
-SELECT 
-    d.name AS Department,
-    e.name AS Employee, 
-    e.salary AS Salary
-FROM Employee e
-LEFT JOIN Department d
-ON e.departmentId = d.id
-GROUP BY e.name, e.salary, d.name
-HAVING (d.name, e.salary) IN (
-    SELECT d.name, MAX(salary)
-    FROM Employee e
-    LEFT JOIN Department d
-    ON e.departmentId = d.id
-    GROUP BY d.name, e.departmentId
-)
+SELECT D.NAME AS DEPARTMENT, E.NAME AS EMPLOYEE, E.SALARY AS SALARY
+FROM EMPLOYEE E
+JOIN DEPARTMENT D ON E.DEPARTMENTID = D.ID
+WHERE (D.NAME, E.SALARY) IN (
+    SELECT D.NAME, MAX(E.SALARY)
+    FROM EMPLOYEE E
+    JOIN DEPARTMENT D ON E.DEPARTMENTID = D.ID
+    GROUP BY D.NAME
+);
