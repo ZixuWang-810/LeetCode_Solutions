@@ -1,5 +1,5 @@
 -- Write your PostgreSQL query statement below
-SELECT 
+SELECT
     sell_date,
     COUNT(DISTINCT product) AS num_sold,
     STRING_AGG(DISTINCT product, ',') as products
