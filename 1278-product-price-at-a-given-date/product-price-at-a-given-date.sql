@@ -8,8 +8,10 @@ where  (product_id, change_date) in (
     group by 1 )
 )
 
-select distinct p.product_id, coalesce(cte.new_price,10) as price from
-Products p
-left join
-cte
+select distinct 
+    p.product_id, 
+    (CASE WHEN cte.new_price IS NULL THEN 10
+    ELSE cte.new_price END) AS price
+from Products p
+left join cte
 on p.product_id = cte.product_id
