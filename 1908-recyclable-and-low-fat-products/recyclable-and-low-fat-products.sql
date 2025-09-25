@@ -1,5 +1,5 @@
 -- Write your PostgreSQL query statement below
-SELECT 
+SELECT
     product_id
 FROM Products
 WHERE low_fats = 'Y'
