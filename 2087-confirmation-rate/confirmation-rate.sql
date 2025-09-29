@@ -5,14 +5,9 @@ WITH cte AS (
         s1.user_id,
         c.time_stamp,
         c.action
-FROM (
-    SELECT
-        DISTINCT user_id
-        FROM Signups s
-) s1
-
-LEFT JOIN Confirmations c
-ON s1.user_id = c.user_id
+    FROM Signups s1
+    LEFT JOIN Confirmations c
+    ON s1.user_id = c.user_id
 )
 
 SELECT
