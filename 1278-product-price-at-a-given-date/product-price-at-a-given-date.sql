@@ -1,10 +1,23 @@
 -- Write your PostgreSQL query statement below
-with t1 as (
-select *, rank() over (partition by product_id order by change_date desc) price_order
-from products
-where change_date <= '2019-08-16'
+WITH cte AS (
+    SELECT
+        product_id,
+        new_price
+    FROM Products
+    WHERE (product_id, change_date) IN(
+        SELECT 
+            product_id,
+            MAX(change_date)
+        FROM Products
+        WHERE change_date <= '2019-08-16'
+        GROUP BY 1
+    )
 )
-select t2.product_id, case when t1.new_price is null then 10 else t1.new_price end as price
-from (select distinct product_id from products) t2
-left join t1 on t2.product_id = t1.product_id
-where price_order = 1 or price_order is null
+
+SELECT
+    p.product_id,
+    (CASE WHEN c.new_price IS NULL THEN 10
+    ELSE c.new_price END) AS price
+FROM (select distinct product_id from products) p
+LEFT JOIN cte c
+ON p.product_id = c.product_id
