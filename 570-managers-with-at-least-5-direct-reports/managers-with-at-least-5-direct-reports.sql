@@ -1,8 +1,8 @@
 -- Write your PostgreSQL query statement below
-SELECT e1.name
+SELECT 
+    e2.name
 FROM Employee e1
-LEFT JOIN Employee e2
-ON e1.id = e2.managerId
-GROUP BY e1.id, e1.name
-HAVING COUNT(e2.managerId) > 4
-
+INNER JOIN Employee e2
+    ON e1.managerId = e2.id
+GROUP BY e2.id, e2.name
+HAVING COUNT(*) > 4
