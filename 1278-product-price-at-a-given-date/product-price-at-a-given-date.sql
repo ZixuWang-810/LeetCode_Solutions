@@ -4,8 +4,8 @@ WITH cte AS (
         product_id,
         new_price
     FROM Products
-    WHERE (product_id, change_date) IN(
-        SELECT 
+    WHERE (product_id, change_date) IN (
+        SELECT
             product_id,
             MAX(change_date)
         FROM Products
@@ -16,8 +16,10 @@ WITH cte AS (
 
 SELECT
     p.product_id,
-    (CASE WHEN c.new_price IS NULL THEN 10
-    ELSE c.new_price END) AS price
-FROM (select distinct product_id from products) p
+    coalesce(c.new_price, 10) AS price
+FROM (
+    SELECT DISTINCT product_id
+    FROM Products
+) p
 LEFT JOIN cte c
-ON p.product_id = c.product_id
+ON c.product_id = p.product_id
