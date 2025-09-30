@@ -15,11 +15,8 @@ WITH cte AS (
 )
 
 SELECT
-    p.product_id,
+    DISTINCT p.product_id,
     coalesce(c.new_price, 10) AS price
-FROM (
-    SELECT DISTINCT product_id
-    FROM Products
-) p
+FROM Products p
 LEFT JOIN cte c
 ON c.product_id = p.product_id
