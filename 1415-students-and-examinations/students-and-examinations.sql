@@ -1,18 +1,18 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    s.student_id,
-    s.student_name,
-    sub.subject_name,
+WITH cte AS (
+    SELECT *
+    FROM Students s
+    CROSS JOIN Subjects sub
+)
+
+SELECT 
+    c.student_id,
+    c.student_name,
+    c.subject_name,
     COUNT(e.subject_name) AS attended_exams
-FROM Students s
-CROSS JOIN Subjects sub
-LEFT JOIN Examinations e
-    ON s.student_id = e.student_id
-    AND sub.subject_name = e.subject_name
-GROUP BY 
-    s.student_id,
-    s.student_name,
-    sub.subject_name
-ORDER BY 
-    s.student_id,
-    sub.subject_name
+FROM Examinations e
+RIGHT JOIN cte c
+    ON c.student_id = e.student_id
+    AND c.subject_name = e.subject_name
+GROUP BY c.student_id, c.student_name, c.subject_name
+ORDER BY c.student_id, c.subject_name
