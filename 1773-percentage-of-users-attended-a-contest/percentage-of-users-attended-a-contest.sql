@@ -7,9 +7,9 @@ WITH cte AS (
 SELECT
     r.contest_id,
     ROUND(
-        COUNT(r.user_id)::DECIMAL / ( SELECT num_u FROM cte)
-        ,4
-    ) * 100 AS percentage
+        COUNT(r.user_id) * 100::DECIMAL / ( SELECT num_u FROM cte)
+        ,2
+    ) AS percentage
 FROM Register r
 LEFT JOIN Users u
     ON u.user_id = r.user_id
