@@ -1,17 +1,23 @@
 -- Write your PostgreSQL query statement below
-SELECT
-  ROUND(
-    COUNT(*) * 100.0 / (
-      SELECT COUNT(DISTINCT customer_id)
-      FROM Delivery
-    ), 2
-  ) AS immediate_percentage
-FROM Delivery a
-JOIN Delivery b
-  ON a.order_date = b.customer_pref_delivery_date
- AND a.customer_id = b.customer_id
-WHERE a.order_date = (
-  SELECT MIN(order_date)
-  FROM Delivery c
-  WHERE c.customer_id = a.customer_id
-);
+WITH cte AS (
+    SELECT
+        *
+    FROM Delivery
+    WHERE (customer_id, order_date) IN (
+        SELECT
+            customer_id,
+            MIN(order_date)
+        FROM Delivery
+        GROUP BY 1
+    )   
+)
+SELECT 
+    ROUND(
+        AVG(CASE 
+                WHEN order_date = customer_pref_delivery_date 
+                THEN 1
+                ELSE 0
+            END) * 100 ::DECIMAL
+        ,2
+    ) AS immediate_percentage
+FROM cte
