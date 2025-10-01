@@ -1,19 +1,12 @@
 -- Write your PostgreSQL query statement below
+SELECT 
+    s.user_id,
+    ROUND(
+        SUM(CASE WHEN c.action = 'confirmed' THEN 1 ELSE 0 END) ::DECIMAL / COUNT(s.user_id) ::DECIMAL
+        ,2
+    )AS confirmation_rate
 
-WITH cte AS (
-    SELECT 
-        s1.user_id,
-        c.time_stamp,
-        c.action
-    FROM Signups s1
-    LEFT JOIN Confirmations c
-    ON s1.user_id = c.user_id
-)
-
-SELECT
-    user_id,
-    ROUND(AVG(CASE WHEN action = 'confirmed' THEN 1.00 
-    ELSE 0 END), 2) AS confirmation_rate
-FROM cte
-GROUP BY 
-    user_id
+FROM Signups s
+LEFT JOIN Confirmations c
+    ON s.user_id = c.user_id
+GROUP BY s.user_id
