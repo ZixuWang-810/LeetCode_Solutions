@@ -1,6 +1,6 @@
 -- Write your PostgreSQL query statement below
 SELECT
-    DISTINCT product_id,
+    product_id,
     year AS first_year,
     quantity,
     price
