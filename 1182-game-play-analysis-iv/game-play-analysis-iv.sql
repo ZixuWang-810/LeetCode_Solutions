@@ -1,9 +1,30 @@
-with t1 as (
-    select distinct player_id, event_date,
-        rank() over (partition by player_id order by event_date) as rank_order,
-        lead(event_date) over (partition by player_id order by event_date) as lead
-    from activity
+-- Write your PostgreSQL query statement below
+WITH cte AS (
+    SELECT
+        player_id,
+        event_date,
+        LEAD(event_date) OVER(
+            PARTITION BY player_id ORDER BY event_date
+        ) AS next_date
+    FROM Activity
 )
-select round(count(distinct player_id)::decimal / (select count(distinct player_id) from activity)::decimal,2) as fraction
-from t1
-where rank_order = 1 and lead - event_date = 1
+, cte2 AS (
+    SELECT 
+        DISTINCT player_id
+    FROM cte
+    WHERE next_date = event_date + 1 
+    AND (player_id,event_date) IN (
+        SELECT 
+            player_id,
+            MIN(event_date)
+        FROM cte
+        GROUP BY 1
+    )
+)
+SELECT 
+    ROUND(
+        COUNT(player_id) ::DECIMAL
+        / (SELECT COUNT(DISTINCT player_id) FROM Activity) ::DECIMAL
+        ,2
+    ) AS fraction
+FROM cte2
