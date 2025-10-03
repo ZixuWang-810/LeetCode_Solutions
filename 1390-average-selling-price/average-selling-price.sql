@@ -12,15 +12,11 @@ WITH cte AS (
 
 SELECT
     product_id,
-    (
-        CASE 
-            WHEN SUM(units) IS NOT NULL
-            THEN ROUND(
-                SUM(units * price)::DECIMAL / SUM(units)::DECIMAL,
-                2
-            )
-            ELSE 0
-        END
+    coalesce(
+        ROUND(
+            SUM(units * price)::DECIMAL / SUM(units)::DECIMAL,
+            2
+        ), 0
     ) AS average_price
 FROM cte
 GROUP BY 1
