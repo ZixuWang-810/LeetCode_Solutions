@@ -1,17 +1,13 @@
 -- Write your PostgreSQL query statement below
-SELECT
+SELECT 
     query_name,
     ROUND(
-        AVG(
-            rating::DECIMAL/position::DECIMAL
-        )
+        AVG(rating::DECIMAL/position::DECIMAL)
         ,2
     ) AS quality,
     ROUND(
-        SUM(CASE WHEN rating < 3 THEN 1 ELSE 0 END)*100::DECIMAL / 
-        COUNT(*)::DECIMAL
+        COUNT(CASE WHEN rating < 3 THEN 1 END)*100::DECIMAL / COUNT(*)::DECIMAL
         ,2
     ) AS poor_query_percentage
 FROM Queries
-GROUP BY 
-    query_name
+GROUP BY 1
