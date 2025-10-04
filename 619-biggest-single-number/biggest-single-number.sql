@@ -1,8 +1,9 @@
-SELECT MAX(num) AS num
-FROM (
-    SELECT
-    num
+-- Write your PostgreSQL query statement below
+WITH cte AS (
+    SELECT num
     FROM MyNumbers
     GROUP BY num
-    HAVING COUNT(*) = 1
+    HAVING COUNT(num) = 1
 )
+SELECT MAX(num) AS num
+FROM cte
