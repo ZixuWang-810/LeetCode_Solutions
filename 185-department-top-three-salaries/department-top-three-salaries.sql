@@ -1,15 +1,17 @@
 -- Write your PostgreSQL query statement below
-SELECT 
-    d.name AS Department, 
-    e.name AS Employee, 
-    e.salary AS Salary
-FROM Employee e
-LEFT JOIN Department d
-    ON d.id = e.departmentId
-WHERE e.salary IN (
-    SELECT DISTINCT salary
+WITH cte AS (
+    SELECT
+        name,
+        salary,
+        departmentId,
+        DENSE_RANK() OVER(PARTITION BY departmentId ORDER BY salary DESC) AS rank
     FROM Employee
-    WHERE Employee.departmentId = d.id 
-    ORDER BY salary DESC
-    LIMIT 3
 )
+SELECT
+    d.name AS Department ,
+    c.name AS Employee ,
+    c.salary AS Salary
+FROM cte c 
+LEFT JOIN Department d
+ON c.departmentId = d.id
+WHERE rank < 4
