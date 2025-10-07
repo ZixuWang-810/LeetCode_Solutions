@@ -1,22 +1,21 @@
 -- Write your PostgreSQL query statement below
 WITH cte AS (
-    SELECT
+    SELECT 
         product_id,
         new_price
-    FROM Products 
+    FROM Products
     WHERE (product_id, change_date) IN (
-        SELECT 
+        SELECT
             product_id,
             MAX(change_date)
         FROM Products
         WHERE change_date <= '2019-08-16'
-        GROUP BY 1
+        GROUP BY product_id
     )
 )
-
 SELECT
     DISTINCT p.product_id,
-    coalesce(c.new_price, 10) AS price
+    COALESCE(c.new_price, 10) AS price
 FROM Products p
 LEFT JOIN cte c
-ON p.product_id = c.product_id
+ON c.product_id= p.product_id
