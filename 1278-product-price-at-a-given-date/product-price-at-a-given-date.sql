@@ -14,6 +14,5 @@ SELECT
     DISTINCT p.product_id,
     COALESCE(c.new_price, 10) AS price
 FROM Products p
-LEFT JOIN cte c
+LEFT JOIN (SELECT * FROM cte WHERE rank = 1) c
 ON p.product_id = c.product_id
-WHERE rank = 1 OR rank IS NULL
