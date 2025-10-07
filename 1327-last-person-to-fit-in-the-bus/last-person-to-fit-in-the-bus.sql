@@ -1,10 +1,15 @@
-SELECT person_name
-FROM (
-    SELECT 
-        person_name, 
+-- Write your PostgreSQL query statement below
+WITH cte AS (
+    SELECT
+        person_name,
         turn,
-        SUM(weight) OVER (ORDER BY turn) AS cum_wei
+        SUM(weight) OVER(ORDER BY turn) AS sum_wei
     FROM Queue
-) 
-WHERE cum_wei <= 1000
-ORDER BY turn DESC LIMIT 1;
+)
+
+SELECT
+    person_name
+FROM cte
+WHERE sum_wei <= 1000
+ORDER BY turn DESC
+LIMIT 1
