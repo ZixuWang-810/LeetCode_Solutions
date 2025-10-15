@@ -8,7 +8,7 @@ ON o.customer_id = c.customer_id
 GROUP BY 
     c.customer_id,
     c.customer_name
-HAVING SUM((o.product_name = 'A')::INTEGER) > 0 
-AND SUM((o.product_name = 'B')::INTEGER) > 0
-AND SUM((o.product_name = 'C')::INTEGER) = 0
+HAVING COUNT(CASE WHEN o.product_name = 'A' THEN 1 END) > 0 
+AND COUNT(CASE WHEN o.product_name = 'B' THEN 1 END) > 0
+AND COUNT(CASE WHEN o.product_name = 'C'THEN 1 END) = 0
 ORDER BY c.customer_id
