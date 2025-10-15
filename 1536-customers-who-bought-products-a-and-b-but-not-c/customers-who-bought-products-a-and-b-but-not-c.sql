@@ -1,14 +1,24 @@
--- Write your PostgreSQL query statement below
-SELECT
-    c.customer_id,
-    c.customer_name
-FROM Orders o
-LEFT JOIN Customers c
-ON o.customer_id = c.customer_id
-GROUP BY 
-    c.customer_id,
-    c.customer_name
-HAVING COUNT(CASE WHEN o.product_name = 'A' THEN 1 END) > 0 
-AND COUNT(CASE WHEN o.product_name = 'B' THEN 1 END) > 0
-AND COUNT(CASE WHEN o.product_name = 'C'THEN 1 END) = 0
-ORDER BY c.customer_id
+with customers_a as (
+    select distinct customer_id
+    from orders
+    where product_name = 'A'
+),
+customers_b as (
+    select distinct customer_id
+    from orders
+    where product_name = 'B'
+),
+customers_c as (
+    select distinct customer_id
+    from orders
+    where product_name = 'C'
+)
+select
+    customer_id,
+    customer_name
+from customers
+where
+    customer_id in (select customer_id from customers_a)
+    and customer_id in (select customer_id from customers_b)
+    and customer_id not in (select customer_id from customers_c)
+order by customer_id asc
