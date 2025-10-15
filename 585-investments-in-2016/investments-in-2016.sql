@@ -1,14 +1,18 @@
 -- Write your PostgreSQL query statement below
 WITH cte AS (
-    SELECT
+    SELECT 
         pid,
-        tiv_2016,
-        COUNT(pid) OVER(PARTITION BY tiv_2015) AS num_tiv,
-        COUNT(pid) OVER(PARTITION BY (lat,lon)) AS num_loc
+        COUNT(tiv_2015) OVER(PARTITION BY tiv_2015) AS c_5,
+        COUNT(*) OVER(PARTITION BY (lat, lon)) AS c_l,
+        tiv_2016
     FROM Insurance
 )
-SELECT 
-    ROUND(SUM(tiv_2016)::DECIMAL, 2) AS tiv_2016 
-FROM cte
-WHERE num_tiv > 1
-AND num_loc = 1
+
+SELECT
+    ROUND(
+        SUM(tiv_2016::DECIMAL)
+        ,2
+    ) AS tiv_2016
+FROM cte 
+WHERE c_5 > 1
+AND c_l = 1
