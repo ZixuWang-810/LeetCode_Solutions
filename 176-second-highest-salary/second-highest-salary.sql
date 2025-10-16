@@ -1,9 +1,8 @@
-with cte as (
-    select *, dense_rank() over (order by salary desc) as s_rank
-    from employee
-)
-SELECT (SELECT 
-    DISTINCT salary
-FROM cte
-WHERE s_rank = 2
+-- Write your PostgreSQL query statement below
+SELECT(
+    SELECT 
+        DISTINCT salary
+    FROM Employee
+    ORDER BY salary DESC
+    LIMIT 1 OFFSET 1
 ) AS SecondHighestSalary
