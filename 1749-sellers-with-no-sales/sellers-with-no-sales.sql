@@ -1,13 +1,11 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT *
-    FROM Orders 
-    WHERE TO_CHAR(sale_date, 'YYYY') = '2020'
+SELECT
+    seller_name
+FROM Seller
+WHERE seller_id NOT IN (
+    SELECT seller_id
+    FROM Orders
+    WHERE sale_date >= '2020-01-01'
+    AND sale_date < '2021-01-01'
 )
-SELECT 
-    s.seller_name
-FROM Seller s
-LEFT JOIN cte c
-    ON c.seller_id = s.seller_id
-WHERE c.order_id IS NULL
-ORDER BY s.seller_name
+ORDER BY seller_name
