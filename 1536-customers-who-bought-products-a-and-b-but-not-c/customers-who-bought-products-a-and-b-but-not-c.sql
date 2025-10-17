@@ -1,24 +1,29 @@
-with customers_a as (
-    select distinct customer_id
-    from orders
-    where product_name = 'A'
-),
-customers_b as (
-    select distinct customer_id
-    from orders
-    where product_name = 'B'
-),
-customers_c as (
-    select distinct customer_id
-    from orders
-    where product_name = 'C'
+-- Write your PostgreSQL query statement below
+WITH cte1 AS (
+    SELECT
+        customer_id
+    FROM Orders
+    GROUP BY customer_id
+    HAVING COUNT(*) FILTER (WHERE product_name = 'A') > 0
 )
-select
-    customer_id,
-    customer_name
-from customers
-where
-    customer_id in (select customer_id from customers_a)
-    and customer_id in (select customer_id from customers_b)
-    and customer_id not in (select customer_id from customers_c)
-order by customer_id asc
+, cte2 AS (
+    SELECT
+        customer_id
+    FROM Orders
+    GROUP BY customer_id
+    HAVING COUNT(*) FILTER (WHERE product_name = 'B') > 0
+)
+,cte3 AS (
+    SELECT
+        customer_id
+    FROM Orders
+    GROUP BY customer_id
+    HAVING COUNT(*) FILTER (WHERE product_name = 'C') = 0
+)
+
+SELECT *
+FROM Customers
+WHERE customer_id IN ( SELECT * FROM cte1)
+AND customer_id IN ( SELECT * FROM cte2)
+AND customer_id IN ( SELECT * FROM cte3)
+ORDER BY customer_id
