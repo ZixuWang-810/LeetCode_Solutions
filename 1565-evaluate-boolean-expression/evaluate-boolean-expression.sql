@@ -1,15 +1,17 @@
+-- Write your PostgreSQL query statement below
 SELECT
-    LV.name as left_operand
-    ,E.operator
-    ,RV.name as right_operand
-    ,CASE 
-        WHEN ((E.operator = '=' AND LV.value = RV.value) 
-            OR (E.operator = '<' AND LV.value < RV.value)
-            OR (E.operator = '>' AND LV.value > RV.value))
+    e.left_operand,
+    e.operator,
+    e.right_operand,
+    CASE
+        WHEN (operator = '>' AND v1.value > v2.value)
+        OR (operator = '<' AND v1.value < v2.value)
+        OR (operator = '=' AND v1.value = v2.value)
         THEN 'true'
-        ELSE 'false' END as value
-FROM Expressions E
-    INNER JOIN Variables LV
-    ON E.left_operand = LV.name
-    INNER JOIN Variables RV
-    ON E.right_operand  = RV.name
+        ELSE 'false'
+    END AS value
+FROM Expressions e
+INNER JOIN Variables v1
+    ON v1.name = e.left_operand
+INNER JOIN Variables v2
+    ON v2.name = e.right_operand
