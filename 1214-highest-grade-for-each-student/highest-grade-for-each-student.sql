@@ -4,7 +4,10 @@ WITH cte AS (
         student_id,
         course_id,
         grade,
-        RANK() OVER(PARTITION BY student_id ORDER BY grade DESC, course_id ASC) AS rank
+        RANK() OVER(
+	        PARTITION BY student_id 
+	        ORDER BY grade DESC, course_id ASC
+	       ) AS rank
     FROM Enrollments
 )
 SELECT
