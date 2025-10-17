@@ -1,13 +1,12 @@
--- Write your PostgreSQL query statement below
-SELECT
+SELECT 
     x,
     y,
     z,
-    (CASE
-        WHEN ((x+y)>z) AND((x+z)>y) AND((y+z)>x)
-        THEN 'Yes'
-        ELSE 'No'
-    END
-    ) AS triangle
+    CASE
+        WHEN (x+y) <= z 
+        OR (x+z) <= y
+        OR (y+z) <= x
+        THEN 'No'
+        ELSE 'Yes'
+    END AS triangle
 FROM Triangle
-    
