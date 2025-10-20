@@ -1,12 +1,13 @@
 -- Write your PostgreSQL query statement below
 WITH cte AS (
-    SELECT
-        num,
-        LEAD(num) OVER() AS lead,
-        LAG(num) OVER() AS lag
+    SELECT 
+        *,
+        LEAD(num) OVER(ORDER BY id) AS next_num,
+        LAG(num) OVER(ORDER BY id) AS pre_num
     FROM Logs
 )
-
-SELECT DISTINCT num AS ConsecutiveNums
+SELECT
+    DISTINCT num AS ConsecutiveNums
 FROM cte
-WHERE lead = lag AND lag = num
+WHERE next_num = pre_num 
+AND next_num = num
