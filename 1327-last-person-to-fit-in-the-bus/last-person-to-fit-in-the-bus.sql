@@ -1,11 +1,9 @@
 -- Write your PostgreSQL query statement below
 WITH cte AS (
-    SELECT
+    SELECT 
         person_name,
         turn,
-        SUM(weight) OVER(
-            ORDER BY turn
-        ) AS amount
+        SUM(weight) OVER(ORDER BY turn) AS amount
     FROM Queue
 )
 SELECT
