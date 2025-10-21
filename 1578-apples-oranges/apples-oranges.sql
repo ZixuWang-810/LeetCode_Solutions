@@ -1,14 +1,15 @@
--- Write your PostgreSQL query statement below
 WITH cte AS (
     SELECT
         sale_date,
-        fruit,
-        sold_num,
-        LEAD(sold_num) OVER(PARTITION BY sale_date ORDER BY sale_date, fruit) AS o_num
+        CASE 
+            WHEN fruit = 'oranges' THEN -sold_num
+            ELSE sold_num
+        END
     FROM Sales
 )
 SELECT 
     sale_date,
-    (sold_num - o_num) AS diff
+    SUM(sold_num) AS diff
 FROM cte
-WHERE fruit = 'apples'
+GROUP BY 1
+ORDER BY 1
