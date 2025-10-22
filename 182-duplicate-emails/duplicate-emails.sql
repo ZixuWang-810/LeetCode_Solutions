@@ -1,10 +1,10 @@
 -- Write your PostgreSQL query statement below
 SELECT
-    DISTINCT email AS Email
+    DISTINCT email
 FROM Person
 WHERE email IN (
     SELECT email
     FROM Person
     GROUP BY email
-    HAVING COUNT(email) > 1
+    HAVING COUNT(*) > 1
 )
