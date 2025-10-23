@@ -1,11 +1,8 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        salary,
-        DENSE_RANK() OVER(ORDER BY salary DESC) AS rank
+SELECT(
+    SELECT DISTINCT salary
     FROM Employee
+    ORDER BY salary DESC
+    LIMIT 1 OFFSET 1
 )
-SELECT
-    AVG(salary) AS SecondHighestSalary 
-FROM cte 
-WHERE rank = 2
+AS SecondHighestSalary
