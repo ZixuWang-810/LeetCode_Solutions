@@ -1,15 +1,9 @@
 -- Write your PostgreSQL query statement below
-(SELECT
-    e.employee_id
-FROM Employees e
-LEFT JOIN Salaries s
+SELECT 
+    COALESCE(t1.employee_id, t2.employee_id) AS employee_id
+FROM Employees t1 
+FULL JOIN Salaries t2
     USING (employee_id)
-WHERE s.salary IS NULL
-UNION 
-SELECT
-    s.employee_id
-FROM Salaries s
-LEFT JOIN Employees e
-    USING (employee_id)
-WHERE e.name IS NULL)
-ORDER BY 1
+WHERE t1.name IS NULL 
+OR t2.salary IS NULL
+ORDER BY 1 
