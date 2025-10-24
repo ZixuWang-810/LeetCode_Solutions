@@ -1,20 +1,15 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        student_id,
-        course_id,
-        grade,
-        RANK() OVER(
-            PARTITION BY student_id 
-            ORDER BY grade DESC, course_id 
-        ) AS rank
-    FROM Enrollments
-)
-
 SELECT
     student_id,
-    course_id,
+    MIN(course_id) AS course_id,
     grade
-FROM cte
-WHERE rank = 1
-ORDER BY student_id
+FROM Enrollments
+WHERE (student_id, grade) IN (
+    SELECT
+        student_id,
+        MAX(grade)
+    FROM Enrollments
+    GROUP BY 1
+)
+GROUP BY 1, 3
+ORDER BY 1
