@@ -2,17 +2,17 @@
 SELECT
     s.student_id,
     s.student_name,
-    su.subject_name,
-    COALESCE(COUNT(e.subject_name), 0) AS attended_exams 
+    sub.subject_name,
+    SUM(
+        CASE 
+            WHEN e.subject_name IS NOT NULL THEN 1 
+            ELSE 0
+        END
+    ) AS attended_exams
 FROM Students s
-CROSS JOIN Subjects su
+CROSS JOIN Subjects sub
 LEFT JOIN Examinations e
-    ON e.student_id = s.student_id
-    AND e.subject_name = su.subject_name
-GROUP BY 
-    s.student_id,
-    s.student_name,
-    su.subject_name
-ORDER BY 
-    s.student_id,
-    su.subject_name
+    ON s.student_id = e.student_id
+    AND sub.subject_name = e.subject_name
+GROUP BY 1,2,3
+ORDER BY 1,3
