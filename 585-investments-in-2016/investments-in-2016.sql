@@ -1,6 +1,9 @@
 -- Write your PostgreSQL query statement below
 SELECT
-    SUM(ROUND(tiv_2016::DECIMAL, 2)) AS tiv_2016
+    ROUND(
+        SUM(tiv_2016::DECIMAL)
+        ,2
+    ) AS tiv_2016
 FROM Insurance
 WHERE tiv_2015 IN (
     SELECT tiv_2015
