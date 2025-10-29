@@ -1,17 +1,18 @@
 -- Write your PostgreSQL query statement below
 WITH cte AS (
     SELECT
+        id, 
         name,
         salary,
         departmentId,
         DENSE_RANK() OVER(PARTITION BY departmentId ORDER BY salary DESC) AS rank
-    FROM Employee
+    FROM Employee  
 )
-SELECT 
+SELECT
     d.name AS Department,
     c.name AS Employee,
     c.salary AS Salary
 FROM cte c
 LEFT JOIN Department d
-ON d.id = c.departmentId
-WHERE c.rank < 4
+    ON c.departmentId = d.id
+WHERE rank < 4
