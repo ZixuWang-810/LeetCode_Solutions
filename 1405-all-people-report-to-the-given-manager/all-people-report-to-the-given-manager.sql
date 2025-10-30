@@ -1,26 +1,12 @@
--- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        employee_id
-    FROM Employees
-    WHERE manager_id IN (
-        SELECT
-            employee_id
-        FROM Employees
-        WHERE manager_id IN (
-            SELECT employee_id
-            FROM Employees 
-            WHERE manager_id IN (
-                SELECT employee_id
-                FROM Employees
-                WHERE manager_id = 1
-            )
-            OR manager_id = 1
-        )
-        OR manager_id = 1
-    )
+with recursive subordinates as (
+    select employee_id 
+    from employees 
+    where manager_id = 1 and employee_id <> 1
+    union
+    select employees.employee_id
+    from employees
+    join subordinates 
+        on employees.manager_id = subordinates.employee_id
 )
-SELECT employee_id
-FROM cte 
-WHERE employee_id != 1
 
+select * from subordinates
