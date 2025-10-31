@@ -2,9 +2,10 @@
 WITH cte AS (
     SELECT
         x,
-        LEAD(X) OVER(ORDER BY x) AS next_x
+        LEAD(x) OVER(ORDER BY x) AS nxt
     FROM Point
     ORDER BY x
 )
-SELECT MIN(ABS(next_x - x)) AS shortest
+SELECT
+    MIN(nxt - x) AS shortest
 FROM cte
