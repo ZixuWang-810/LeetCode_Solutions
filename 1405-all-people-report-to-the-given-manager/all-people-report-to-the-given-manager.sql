@@ -1,12 +1,13 @@
-with recursive subordinates as (
-    select employee_id 
-    from employees 
-    where manager_id = 1 and employee_id <> 1
-    union
-    select employees.employee_id
-    from employees
-    join subordinates 
-        on employees.manager_id = subordinates.employee_id
+-- Write your PostgreSQL query statement below
+WITH recursive cte AS (
+    SELECT employee_id
+    FROM Employees 
+    WHERE manager_id = 1 AND employee_id != 1
+    UNION
+    SELECT
+        e.employee_id
+    FROM Employees e
+    JOIN cte c
+        ON e.manager_id = c.employee_id
 )
-
-select * from subordinates
+SELECT * FROM cte
