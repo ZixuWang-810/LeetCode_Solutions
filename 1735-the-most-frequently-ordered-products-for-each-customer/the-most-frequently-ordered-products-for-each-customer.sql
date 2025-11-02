@@ -1,22 +1,13 @@
--- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        *, 
-        COUNT(*) OVER(
-            PARTITION BY customer_id, product_id
-        ) AS orders
-    FROM Orders
+with cte as(
+    select  customer_id ,product_id, product_name,
+    rank()  over(partition by customer_id order by count(*)desc)rnk
+    from Customers 
+    join Orders 
+    using(customer_id)
+    join Products 
+    using(product_id)
+group by 1,2,3
 )
-SELECT
-    DISTINCT c.customer_id, 
-    c.product_id, p.product_name
-FROM cte c
-LEFT JOIN Products p
-    USING(product_id)
-WHERE (c.customer_id, c.orders) IN (
-    SELECT
-        customer_id,
-        MAX(orders)
-    FROM cte
-    GROUP BY 1
-)
+select customer_id ,product_id ,product_name 
+from cte
+where rnk=1
