@@ -43,4 +43,3 @@ SELECT
 FROM CTE c1 
 INNER JOIN cte3 c3
     ON c1.company = c3.company AND c1.rm = c3.rm
-ORDER BY 1
