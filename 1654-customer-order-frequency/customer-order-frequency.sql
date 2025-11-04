@@ -1,41 +1,41 @@
 -- Write your PostgreSQL query statement below
-WITH june AS (
+WITH cte AS (
     SELECT
-        o.customer_id,
-        o.product_id,
-        o.quantity,
-        p.price
-    FROM Orders o
-    LEFT JOIN Product p
-        USING (product_id)
-    WHERE order_date >= '2020-06-01'
-    AND order_date < '2020-07-01'
+        customer_id,
+        product_id,
+        TO_CHAR(order_date, 'YYYY-MM') AS month,
+        quantity
+    FROM Orders
 )
-, july AS (
-    SELECT 
-        o.customer_id,
-        o.product_id,
-        o.quantity,
-        p.price
-    FROM Orders o
+, cte2 AS (
+    SELECT
+        c.customer_id
+    FROM cte c
     LEFT JOIN Product p
-        USING (product_id)
-    WHERE order_date >= '2020-07-01'
-    AND order_date < '2020-08-01'
+        USING(product_id)
+    WHERE c.month = '2020-06'
+    GROUP BY    
+        c.customer_id
+    HAVING SUM(c.quantity*p.price) >= 100
+)
+, cte3 AS (
+    SELECT
+        c.customer_id
+    FROM cte c
+    LEFT JOIN Product p
+        USING(product_id)
+    WHERE c.month = '2020-07'
+    GROUP BY    
+        c.customer_id
+    HAVING SUM(c.quantity*p.price) >= 100
 )
 SELECT
     customer_id,
     name
 FROM Customers
 WHERE customer_id IN (
-    SELECT customer_id
-    FROM june
-    GROUP BY customer_id
-    HAVING SUM(price * quantity) >= 100
+    SELECT * FROM cte2
 )
-AND customer_id IN(
-    SELECT customer_id
-    FROM july
-    GROUP BY customer_id
-    HAVING SUM(price * quantity) >= 100
+AND customer_id IN (
+    SELECT * FROM cte3
 )
