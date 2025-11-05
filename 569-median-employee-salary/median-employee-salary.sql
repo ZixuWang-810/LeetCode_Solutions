@@ -11,11 +11,7 @@ WITH cte1 AS (
 ,cte2 AS (
     SELECT 
         company,
-        CASE 
-            WHEN MAX(rn) % 2 = 1 THEN MAX(rn) / 2 + 1 
-            WHEN MAX(rn) % 2 = 0 THEN MAX(rn) / 2 + 1
-            ELSE 0 
-        END AS rn1,
+        MAX(rn) / 2 + 1 AS rn1,
         CASE WHEN MAX(rn) % 2 = 0 THEN MAX(rn) / 2
         ELSE 0 END AS rn2
     FROM cte1
