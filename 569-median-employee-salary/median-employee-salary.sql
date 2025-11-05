@@ -1,45 +1,37 @@
 -- Write your PostgreSQL query statement below
-WITH CTE AS(
+WITH cte1 AS (
     SELECT
         *,
-        ROW_NUMBER() OVER (
-            PARTITION BY company 
-            ORDER BY company,salary,id
-        ) rm
-    FROM 
-        Employee
+        ROW_NUMBER() OVER(
+            PARTITION BY company
+            ORDER BY salary, id
+        ) AS rn
+    FROM Employee
 )
-, CTE2 AS (
+,cte2 AS (
     SELECT 
-	    company,
+        company,
         CASE 
-            WHEN MAX(rm) % 2 = 0 THEN MAX(rm)/2 
-            WHEN MAX(rm) % 2 = 1 THEN (MAX(rm) - 1)/2 + 1 ELSE 0 
-        END rm1, 
-        CASE 
-            WHEN MAX(rm) % 2 = 0  
-            THEN MAX(rm)/2 + 1 
+            WHEN MAX(rn) % 2 = 1 THEN MAX(rn) / 2 + 1 
+            WHEN MAX(rn) % 2 = 0 THEN MAX(rn) / 2 + 1
             ELSE 0 
-        END rm2
-    FROM CTE
-    GROUP BY company 
+        END AS rn1,
+        CASE WHEN MAX(rn) % 2 = 0 THEN MAX(rn) / 2
+        ELSE 0 END AS rn2
+    FROM cte1
+    GROUP BY 1
 )
-,cte3 AS (
-    SELECT
-        company,
-        rm1 AS rm
-    FROM CTE2
-    UNION ALL
-    SELECT
-        company,
-        rm2 
-    FROM CTE2
-)
-
 SELECT
-	c1.id,
-    c1.company,
-    c1.salary
-FROM CTE c1 
-INNER JOIN cte3 c3
-    ON c1.company = c3.company AND c1.rm = c3.rm
+    id,
+    company,
+    salary
+FROM cte1 
+WHERE (company, rn)  IN (
+    SELECT
+        company,
+        rn1
+    FROM cte2
+)
+OR (company, rn)  IN(
+    SELECT company, rn2 FROM cte2
+)
