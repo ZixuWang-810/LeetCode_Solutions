@@ -1,6 +1,18 @@
 -- Write your PostgreSQL query statement below
-select id,month,sum(salary) over(partition by id order by month range between 2 preceding and current row) Salary 
-FROM Employee 
-WHERE (id,month) NOT IN
-(select id, max(month) from Employee  group by 1 )
-order by id,month desc
+SELECT
+    id,
+    month,
+    SUM(salary)OVER(
+        PARTITION BY id
+        ORDER BY month
+        RANGE BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS salary
+FROM Employee
+WHERE (id, month) NOT IN (
+    SELECT
+        id,
+        MAX(month)
+    FROM Employee
+    GROUP BY 1
+)
+ORDER BY 1, 2 DESC
