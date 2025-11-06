@@ -1,14 +1,11 @@
 -- Write your PostgreSQL query statement below
-SELECT
+SELECT  
     contest_id,
     ROUND(
-        COUNT(user_id)*100::DECIMAL / (
-            SELECT COUNT(*) FROM Users
-        )::DECIMAL
+        COUNT(*)::DECIMAL*100 / 
+        (SELECT COUNT(*) FROM Users)::DECIMAL
         ,2
     ) AS percentage
 FROM Register
-GROUP BY contest_id
-ORDER BY 
-    percentage DESC, 
-    contest_id
+GROUP BY 1
+ORDER BY 2 DESC, 1
