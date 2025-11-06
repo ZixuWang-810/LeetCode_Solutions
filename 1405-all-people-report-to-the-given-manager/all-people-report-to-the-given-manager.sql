@@ -1,5 +1,5 @@
 -- Write your PostgreSQL query statement below
-WITH RECURSIVE cte AS (
+with recursive cte AS (
     SELECT
         employee_id
     FROM Employees
@@ -9,7 +9,7 @@ WITH RECURSIVE cte AS (
     SELECT
         e.employee_id
     FROM Employees e
-    JOIN cte c 
-        ON c.employee_id = e.manager_id
+    JOIN cte c
+    ON c.employee_id = e.manager_id
 )
 SELECT * FROM cte
