@@ -1,20 +1,21 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
+with cte as (
+    select
         visited_on,
-        SUM(amount) AS amount
-    FROM Customer
-    GROUP BY visited_on
-    ORDER BY visited_on
+        sum(amount) as amount
+    from customer
+    group by 1
 )
-
-SELECT
+select
     visited_on,
-    SUM(amount) OVER(
-        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-    ) AS amount,
-    ROUND(AVG(amount) OVER(
-        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-    ), 2) AS average_amount
-FROM cte
-OFFSET 6
+    sum(amount)over(
+        order by visited_on
+        rows between 6 preceding and current row
+    )as amount,
+    round(avg(amount)over(
+        order by visited_on
+        rows between 6 preceding and current row
+    ),2) as average_amount
+from cte
+order by 1
+offset 6
