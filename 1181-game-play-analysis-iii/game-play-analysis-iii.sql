@@ -1,10 +1,9 @@
-# Write your MySQL query statement below
-SELECT
+select
     player_id,
     event_date,
-    SUM(games_played) OVER(
-        PARTITION BY player_id
-        ORDER BY event_date
-        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    ) AS games_played_so_far 
-FROM Activity 
+    sum(games_played)over(
+        partition by player_id
+        order by event_date
+        rows between unbounded preceding and current row
+    ) as games_played_so_far
+from activity
