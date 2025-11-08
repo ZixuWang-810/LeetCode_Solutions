@@ -1,13 +1,13 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
+with cte as (
+    select
         log_id,
-        log_id - ROW_NUMBER()OVER() AS grp
-    FROM Logs
+        row_number()over() - log_id as grp
+    from logs
 )
-SELECT
-    MIN(log_id) AS start_id,
-    MAX(log_id) AS end_id
-FROM cte 
-GROUP BY grp
-ORDER BY 1
+select
+    min(log_id) as start_id,
+    max(log_id) as end_id
+from cte
+group by grp
+order by 1
