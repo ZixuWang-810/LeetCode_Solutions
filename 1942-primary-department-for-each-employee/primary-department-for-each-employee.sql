@@ -1,16 +1,18 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (SELECT
-    employee_id
-FROM Employee
-GROUP BY 1
-HAVING COUNT(*) = 1)
--- UNION
-(SELECT 
+select 
     employee_id,
     department_id
-FROM Employee
-WHERE primary_flag = 'Y'
-OR employee_id IN (
-    SELECT * FROM cte 
+from Employee
+where employee_id in(
+    select employee_id
+    from employee
+    group by 1
+    having count(*) = 1
 )
-)
+
+union 
+select
+    employee_id,
+    department_id
+from Employee
+where primary_flag = 'Y'
