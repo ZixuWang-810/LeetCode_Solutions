@@ -1,11 +1,8 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    w.name AS warehouse_name,
-    SUM(
-        p.Width * p.Length * p.Height * w.units
-    ) AS volume
-FROM Warehouse w
-LEFT JOIN Products p
-    ON p.product_id = w.product_id
-GROUP BY 
-    w.name
+select
+    w.name as warehouse_name,
+    sum(w.units * p.width * p.length * p.height)as volume
+from warehouse w
+left join products p
+    using(product_id)
+group by 1
