@@ -1,10 +1,13 @@
 -- Write your PostgreSQL query statement below
-SELECT
-ROUND(
-    COUNT (*) FILTER( 
-        WHERE customer_pref_delivery_date = order_date
-    )*100::DECIMAL / 
-    (SELECT COUNT(*) FROM Delivery)::DECIMAL
-    ,2
-) AS immediate_percentage
-FROM Delivery
+select
+    round(
+        sum(
+            case
+                when order_date = customer_pref_delivery_date
+                then 1 else 0
+            end
+        )::decimal*100 / 
+        (select count(*) from Delivery)::decimal
+        ,2
+    ) as immediate_percentage
+from delivery
