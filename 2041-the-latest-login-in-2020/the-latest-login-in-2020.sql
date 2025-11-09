@@ -1,7 +1,7 @@
 -- Write your PostgreSQL query statement below
-SELECT
+select distinct on (user_id)
     user_id,
-    MAX(time_stamp) AS last_stamp
-FROM Logins
-WHERE TO_CHAR(time_stamp, 'YYYY') = '2020'
-GROUP BY 1
+    MAX(time_stamp) last_stamp
+from logins
+where to_char(time_stamp, 'YYYY') = '2020'
+group by 1
