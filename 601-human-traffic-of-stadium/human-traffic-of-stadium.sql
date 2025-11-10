@@ -1,7 +1,7 @@
 -- Write your PostgreSQL query statement below
 with cte as (
     select *,
-        id - row_number()over(order by id) as grp
+        id - row_number()over() as grp
     from stadium
     where people >= 100
 )
