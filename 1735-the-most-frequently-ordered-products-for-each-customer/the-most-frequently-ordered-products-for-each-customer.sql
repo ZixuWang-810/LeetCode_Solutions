@@ -1,13 +1,13 @@
 -- Write your PostgreSQL query statement below
 with cte as (
     select
-        customer_id, 
+        customer_id,
         product_id,
         rank()over(
             partition by customer_id
-            order by count(*) desc
-        )
-    from orders
+            order by count(product_id) desc
+        ) as rank
+    from orders 
     group by 1,2
 )
 select
@@ -16,6 +16,5 @@ select
     p.product_name
 from cte c
 left join products p
-    using (product_id)
+    using(product_id)
 where rank = 1
-
