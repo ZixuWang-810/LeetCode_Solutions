@@ -1,22 +1,16 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
+with cte as (
+    select
         num,
-        SUM(frequency)OVER(ORDER BY num) - frequency AS lower_b,
-        SUM(frequency)OVER(ORDER BY num) AS upper_b
-    FROM Numbers
+        sum(frequency)over(
+            order by num
+        ) as upper,
+        sum(frequency)over(
+            order by num
+        ) - frequency as lower
+    from numbers
 )
-,cte2 AS (
-    SELECT
-        SUM(frequency)::DECIMAL/2 AS median
-    FROM Numbers
-)
-SELECT
-    ROUND(
-        AVG(num)
-        ,1
-    ) AS median
-FROM cte
-WHERE (
-    SELECT median FROM cte2
-) BETWEEN lower_b AND upper_b
+select round(avg(num)::decimal, 1) as median
+from cte 
+where (select sum(frequency)::decimal / 2::decimal from numbers)
+between lower and upper
