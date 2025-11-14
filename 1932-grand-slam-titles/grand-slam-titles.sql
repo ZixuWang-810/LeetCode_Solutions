@@ -1,6 +1,6 @@
--- Write your PostgreSQL query statement below
-WITH cte1 AS (
-    SELECT Wimbledon AS game
+# Write your MySQL query statement below
+WITH cte AS (
+    SELECT Wimbledon AS player_id
     FROM Championships
     UNION ALL
     SELECT Fr_open
@@ -12,12 +12,11 @@ WITH cte1 AS (
     SELECT Au_open
     FROM Championships
 )
-
-SELECT
-    game AS player_id,
+select
+    c.player_id,
     p.player_name,
-    COUNT(*) AS grand_slams_count
-FROM cte1 c
-LEFT JOIN Players p
-    ON c.game = p.player_id
-GROUP BY 1,2
+    count(*) as grand_slams_count 
+from cte c
+left join players p
+    using (player_id)
+group by 1,2
