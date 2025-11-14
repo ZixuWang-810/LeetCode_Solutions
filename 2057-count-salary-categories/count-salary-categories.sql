@@ -1,25 +1,15 @@
 -- Write your PostgreSQL query statement below
-(
-    SELECT
-        'Low Salary' AS category,
-        COUNT(*) AS accounts_count 
-    FROM Accounts
-    WHERE income < 20000
-)
-UNION
-(
-    SELECT
-        'Average Salary' AS category,
-        COUNT(*) AS accounts_count 
-    FROM Accounts
-    WHERE income >= 20000
-    AND income <= 50000
-)
-UNION
-(
-    SELECT
-        'High Salary' AS category,
-        COUNT(*) AS accounts_count 
-    FROM Accounts
-    WHERE income > 50000
-)
+select
+    'Low Salary' as category,
+    sum(case when income < 20000 then 1 else 0 end) as accounts_count
+from accounts
+union
+select
+    'Average Salary',
+    sum(case when income <= 50000 and income >= 20000 then 1 else 0 end) as accounts_count
+from accounts
+union
+select
+    'High Salary',
+    sum(case when income > 50000 then 1 else 0 end) as accounts_count
+from accounts
