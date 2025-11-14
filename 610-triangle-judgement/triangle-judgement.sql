@@ -1,12 +1,8 @@
-SELECT 
-    x,
-    y,
-    z,
-    CASE
-        WHEN (x+y) <= z 
-        OR (x+z) <= y
-        OR (y+z) <= x
-        THEN 'No'
-        ELSE 'Yes'
-    END AS triangle
-FROM Triangle
+-- Write your PostgreSQL query statement below
+select
+    *,
+    case
+        when x+y >z and x+z > y and y+z > x then 'Yes'
+        else 'No'
+    end as triangle
+from triangle
