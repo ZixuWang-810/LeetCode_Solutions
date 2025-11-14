@@ -1,11 +1,9 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    seller_name
-FROM Seller
-WHERE seller_id NOT IN (
-    SELECT seller_id
-    FROM Orders
-    WHERE sale_date >= '2020-01-01'
-    AND sale_date < '2021-01-01'
+select seller_name
+from seller
+where seller_id not in (
+    select seller_id
+    from orders
+    where to_char(sale_date, 'YYYY') = '2020'
 )
-ORDER BY seller_name
+order by 1
