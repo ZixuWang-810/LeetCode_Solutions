@@ -1,17 +1,17 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        product_id,
-        year,
-        quantity,
-        price,
-        RANK() OVER(PARTITION BY product_id ORDER BY year) AS year_rank
-    FROM Sales
+with cte as (
+    select
+        *,
+        rank()over(
+            partition by product_id
+            order by year
+        ) as fy
+    from sales
 )
-SELECT
+select
     product_id,
-    year AS first_year,
+    year as first_year,
     quantity,
     price
-FROM cte 
-WHERE year_rank = 1
+from cte
+where fy = 1
