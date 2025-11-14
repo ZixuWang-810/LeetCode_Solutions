@@ -6,13 +6,11 @@ class Solution:
                 pro*=i
             else: zero+=1
         if zero > 1: return [0]*n
-        res = []
-        if zero == 0:
-            for i in nums:
-                res.append(pro//i)
-        else:
-            for i in nums:
-                if i==0:
-                    res.append(pro)
-                else: res.append(0)
-        return res
+        for i in range(n):
+            if zero == 0:
+                nums[i] = pro//nums[i]
+            else:
+                if nums[i] == 0:
+                    nums[i] = pro
+                else: nums[i] = 0
+        return nums
