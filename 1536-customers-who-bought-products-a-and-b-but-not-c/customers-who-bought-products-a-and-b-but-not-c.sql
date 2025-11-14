@@ -1,29 +1,21 @@
 -- Write your PostgreSQL query statement below
-WITH cte1 AS (
-    SELECT
-        customer_id
-    FROM Orders
-    GROUP BY customer_id
-    HAVING COUNT(*) FILTER (WHERE product_name = 'A') > 0
+select
+    customer_id,
+    customer_name
+from customers
+where customer_id in (
+    select customer_id
+    from orders 
+    where product_name = 'A'
 )
-, cte2 AS (
-    SELECT
-        customer_id
-    FROM Orders
-    GROUP BY customer_id
-    HAVING COUNT(*) FILTER (WHERE product_name = 'B') > 0
+and customer_id in (
+    select customer_id
+    from orders
+    where product_name = 'B'
 )
-,cte3 AS (
-    SELECT
-        customer_id
-    FROM Orders
-    GROUP BY customer_id
-    HAVING COUNT(*) FILTER (WHERE product_name = 'C') = 0
+and customer_id not in (
+    select customer_id
+    from orders
+    where product_name = 'C'
 )
-
-SELECT *
-FROM Customers
-WHERE customer_id IN ( SELECT * FROM cte1)
-AND customer_id IN ( SELECT * FROM cte2)
-AND customer_id IN ( SELECT * FROM cte3)
-ORDER BY customer_id
+order by 1
