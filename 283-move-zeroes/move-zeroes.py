@@ -3,7 +3,7 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        a, b = 0, 0
+        a = b = 0
         while b < len(nums):
             if nums[b] != 0:
                 nums[a], nums[b] = nums[b], nums[a]
