@@ -1,19 +1,32 @@
 class Solution:
     def compress(self, chars: List[str]) -> int:
-        ans = 0
+        ans = []
         i = 0
-
+        count = 0
+        s = ""
         while i < len(chars):
-            letter = chars[i]
-            count = 0
-            while i < len(chars) and chars[i] == letter:
-                count += 1
-                i += 1
-            chars[ans] = letter
-            ans += 1
-            if count > 1:
-                for c in str(count):
-                    chars[ans] = c
-                    ans += 1
+            if s == chars[i]:
+                count+=1
+            elif s == '':
+                s = chars[i]
+                count = 1
+            else:
+                if count == 1:
+                    ans.append(s)
+                else:
+                    ans.append(s)
+                    for n in str(count):
+                        ans.append(n)
+                s = chars[i]
+                count = 1
+            i+=1
+        if count == 1: ans.append(s)
+        else:
+            ans.append(s)
+            for n in str(count):
+                ans.append(n)
+        for a in range(len(ans)):
+            chars[a] = ans[a]
+        return len(ans)
 
-        return ans
+            
