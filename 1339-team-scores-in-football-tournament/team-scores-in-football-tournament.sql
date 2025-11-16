@@ -18,9 +18,9 @@ select
     t.team_id,
     t.team_name,
     sum(
-        case 
-            when host_goals > guest_goals then 3
-            when host_goals = guest_goals then 1
+        case
+            when host_goals > guest_goals then 3 
+            when host_goals = guest_goals then 1 
             else 0
         end
     ) as num_points
