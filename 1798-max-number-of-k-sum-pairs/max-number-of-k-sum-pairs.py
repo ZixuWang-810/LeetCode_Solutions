@@ -4,9 +4,10 @@ class Solution:
         slow, fast = 0, len(nums)-1
         res = 0
         while slow < fast:
-            if nums[slow] + nums[fast] > k:
+            total = nums[slow] + nums[fast]
+            if total > k:
                 fast-=1
-            elif nums[slow] + nums[fast] < k:
+            elif total < k:
                 slow +=1
             else:
                 res+=1
