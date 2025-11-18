@@ -1,16 +1,19 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT requester_id AS id
-    FROM RequestAccepted
-    UNION ALL 
-    SELECT accepter_id
-    FROM RequestAccepted
+with cte as (
+    select
+        requester_id as id,
+        accepter_id
+    from RequestAccepted
+    union all
+    select
+        accepter_id,
+        requester_id
+    from RequestAccepted
 )
-
-SELECT 
+select
     id,
-    COUNT(*) AS num
-FROM cte 
-GROUP BY id
-ORDER BY COUNT(*) DESC
-LIMIT 1
+    count(*) as num
+from cte
+group by 1
+order by 2 desc
+limit 1
