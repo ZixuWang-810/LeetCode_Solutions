@@ -1,7 +1,7 @@
 -- Write your PostgreSQL query statement below
-DELETE FROM Person 
-WHERE id NOT IN (
-    SELECT MIN(id)
-    FROM Person
-    GROUP BY email
+delete from person
+where id not in (
+    select min(id)
+    from person
+    group by email
 )
