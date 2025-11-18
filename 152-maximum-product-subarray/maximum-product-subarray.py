@@ -1,13 +1,12 @@
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        pre = surf = 1
-        max_p = float('-inf')
+        res =  float('-inf')
+        surf = pre = 1
         n = len(nums)
         for i in range(n):
-            pre *= nums[i]
+            pre *=nums[i]
             surf *= nums[n-i-1]
-            max_p = max(max_p, pre, surf)
-
+            res = max(res, pre, surf)
             if pre == 0: pre = 1
             if surf == 0: surf = 1
-        return max_p
+        return res
