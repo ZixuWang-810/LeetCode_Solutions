@@ -2,7 +2,6 @@ class Solution:
     def longestOnes(self, nums, k):
         left = 0
         zeroCount = 0
-        
         for right in range(len(nums)):
             if nums[right] == 0:
                 zeroCount += 1
