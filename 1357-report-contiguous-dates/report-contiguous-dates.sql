@@ -1,34 +1,32 @@
--- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        fail_date AS period,
-        'failed' AS period_state
-    FROM Failed
-    WHERE fail_date >= '2019-01-01'
-    AND fail_date <= '2019-12-31'
-    UNION ALL
-    SELECT
-        success_date,
-        'succeeded'
-    FROM Succeeded
-    WHERE success_date >= '2019-01-01'
-    AND success_date <= '2019-12-31'
+# Write your MySQL query statement below
+with cte1 as (
+    select
+        'failed' as period_state,
+        fail_date as state_date
+    from Failed
+    WHERE fail_date >= '2019-01-01' AND fail_date <= '2019-12-31'
+    union all
+    select
+        'succeeded',
+        success_date
+    from succeeded
+    WHERE success_date >= '2019-01-01' AND success_date <= '2019-12-31'
 )
-,cte2 AS (
-    SELECT
-    *,
-     ROW_NUMBER()OVER(
-            ORDER BY period
-        ) - ROW_NUMBER()OVER(
-        PARTITION BY period_state
-        ORDER BY period
-    ) AS grp
-    FROM cte
+,cte as (
+    select
+        *,
+        row_number()over(
+            order by state_date
+        ) - row_number() over(
+            partition by period_state
+            order by state_date
+        )as grp
+    from cte1
 )
-SELECT
+select 
     period_state,
-    MIN(period) AS start_date,
-    MAX(period) AS end_date
-FROM cte2
-GROUP BY 1, grp
-ORDER BY 2
+    min(state_date) start_date,
+    max(state_date) end_date
+from cte
+group by 1, grp
+order by 2
