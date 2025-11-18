@@ -5,4 +5,3 @@ select
 from logins
 where to_char(time_stamp, 'YYYY') = '2020'
 group by 1
-order by 1
