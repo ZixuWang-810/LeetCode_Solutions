@@ -1,15 +1,13 @@
 -- Write your PostgreSQL query statement below
-with recursive cte AS (
-    SELECT
-        employee_id
-    FROM Employees
-    WHERE manager_id = 1
-    AND employee_id != 1
-    UNION
-    SELECT
-        e.employee_id
-    FROM Employees e
-    JOIN cte c
-    ON c.employee_id = e.manager_id
+with recursive cte as (
+    select employee_id
+    from employees
+    where employee_id != 1 and manager_id = 1
+    union all
+    select e.employee_id
+    from employees e
+    join cte c
+    on c.employee_id = e.manager_id
 )
-SELECT * FROM cte
+select *
+from cte
