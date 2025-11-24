@@ -1,20 +1,22 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT 
-        *,
-        RANK() OVER(
-            PARTITION BY product_id
-            ORDER BY order_date DESC
-        ) rank
-    FROM Orders 
+with cte as (
+    select
+        order_id,
+        order_date,
+        product_id,
+        rank()over(
+            partition by product_id
+            order by order_date desc
+        ) as rank
+    from orders 
 )
-SELECT
+select
     p.product_name,
-    p.product_id,
+    c.product_id,
     c.order_id,
     c.order_date
-FROM cte c
-LEFT JOIN Products p
-    USING(product_id)
-WHERE rank = 1
-ORDER BY 1,2,3
+from cte c
+left join products p
+    using(product_id)
+where rank = 1
+order by 1, 2, 3
