@@ -1,7 +1,6 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    actor_id,
-    director_id
-FROM ActorDirector
-GROUP BY 1, 2
-HAVING COUNT(*) > 2
+select
+    actor_id, director_id
+from actordirector
+group by 1,2
+having count(*) > 2
