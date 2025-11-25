@@ -7,7 +7,7 @@ class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
         slow = fast = head
         prev = None
-        while fast and fast.next:
+        while fast :
             fast = fast.next.next
             slow.next, prev, slow = prev, slow, slow.next
 
