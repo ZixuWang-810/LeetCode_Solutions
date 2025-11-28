@@ -6,16 +6,15 @@
 #         self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        def count_helper(rt, max_v):
+        self.res = 0
+        def helper(rt, max_v):
             if not rt:
-                return 
+                return 0
             else:
                 if rt.val >= max_v:
                     max_v = rt.val
                     self.res+=1
-            count_helper(rt.left, max_v)
-            count_helper(rt.right, max_v)
-        self.res = 0
-        max_v = root.val
-        count_helper(root, max_v)
+                helper(rt.left, max_v)
+                helper(rt.right, max_v)
+        helper(root, root.val)
         return self.res
