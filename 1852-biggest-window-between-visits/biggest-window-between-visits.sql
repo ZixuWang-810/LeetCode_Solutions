@@ -1,19 +1,17 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        *,
-        COALESCE(
-            LEAD(visit_date )OVER(
-                PARTITION BY user_id
-                ORDER BY visit_date
-            )
-            , '2021-1-1'
-        ) AS nxt
-    FROM UserVisits
+with cte as (
+    select
+        user_id,
+        visit_date,
+        coalesce(lead(visit_date)over(
+            partition by user_id
+            order by visit_date
+        ), '2021-1-1') as nxt
+    from uservisits
 )
-SELECT
+select
     user_id,
-    MAX(nxt - visit_date) AS biggest_window
-FROM cte
-GROUP BY 1
-ORDER BY 1
+    max(nxt - visit_date) biggest_window
+from cte
+group by 1
+order by 1
