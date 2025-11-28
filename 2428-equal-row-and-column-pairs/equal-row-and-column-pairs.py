@@ -3,8 +3,7 @@ class Solution:
         r_dic = {}
         res = 0
         for r in grid:
-            if str(r) not in r_dic: r_dic[str(r)] = 1
-            else: r_dic[str(r)] += 1
+            r_dic[str(r)] = r_dic.get(str(r), 0) + 1
         for i in range(len(grid)):
             col = []
             for j in range(len(grid)):
