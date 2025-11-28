@@ -1,12 +1,10 @@
 -- Write your PostgreSQL query statement below
--- Write your PostgreSQL query statement below
-SELECT 
-    name
-FROM SalesPerson
-WHERE sales_id NOT IN (
-    SELECT sales_id
-    FROM Orders o
-    LEFT JOIN Company c
-    ON c.com_id = o.com_id
-    WHERE c.name = 'RED'
+select name
+from salesperson
+where sales_id not in (
+    select o.sales_id
+    from orders o
+    left join company c
+        using(com_id)
+    where c.name = 'RED'
 )
