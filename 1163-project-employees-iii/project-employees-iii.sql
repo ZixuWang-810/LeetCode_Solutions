@@ -1,18 +1,18 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
+with cte as (
+    select
         p.project_id,
-        p.employee_id,
-        RANK()OVER(
-            PARTITION BY p.project_id
-            ORDER BY e.experience_years DESC
-        ) AS rank 
-    FROM Project p
-    LEFT JOIN Employee e
-        USING (employee_id)
+        e.employee_id,
+        rank()over(
+            partition by p.project_id
+            order by e.experience_years desc
+        )as rank
+    from project p
+    left join employee e
+        using (employee_id)
 )
-SELECT
+select 
     project_id,
     employee_id
-FROM cte
-WHERE rank = 1
+from cte 
+where rank = 1
