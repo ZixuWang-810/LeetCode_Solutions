@@ -1,29 +1,24 @@
 -- Write your PostgreSQL query statement below
-WITH fuck AS (
-    SELECT
+with cte as (
+    select
         player_id,
         event_date,
-        LEAD(event_date) OVER(
-            PARTITION BY player_id
-            ORDER BY event_date
-        ) nxt
-    FROM Activity
+        rank()over(
+            partition by player_id
+            order by event_date
+        ) as rank,
+        lead(event_date)over(
+            partition by player_id
+            order by event_date
+        ) as nxt
+    from activity
 )
-, cte AS (
-    SELECT
-        *
-    FROM fuck
-    WHERE (player_id, event_date) IN (
-        SELECT player_id, MIN(event_date)
-        FROM fuck
-        GROUP BY 1
-    )
-)
-SELECT
-    ROUND(
-        COUNT(DISTINCT player_id)::DECIMAL 
-        / (SELECT COUNT(DISTINCT player_id)::DECIMAL FROM Activity)
-        ,2
-    )AS fraction
-FROM cte 
-WHERE event_date = nxt-1
+select
+    round(
+        count(distinct player_id)::decimal / 
+        (select count(distinct player_id)::decimal from activity)
+    ,2
+    ) as fraction
+from cte 
+where rank = 1
+and nxt = event_date+1
