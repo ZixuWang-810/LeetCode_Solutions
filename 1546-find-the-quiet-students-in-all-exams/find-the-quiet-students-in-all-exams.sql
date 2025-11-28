@@ -1,27 +1,29 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT 
-        *,
-        RANK()OVER(
-            PARTITION BY exam_id
-            ORDER BY score
-        ) AS low,
-        RANK()OVER(
-            PARTITION BY exam_id
-            ORDER BY score DESC
-        ) AS high
-    FROM Exam
+with cte as (
+    select
+        exam_id,
+        student_id,
+        rank()over(
+            partition by exam_id
+            order by score desc
+        ) high,
+        rank() over(
+            partition by exam_id
+            order by score 
+        ) low
+    from exam
 )
-SELECT
-    DISTINCT e.student_id,
+select
+    distinct c.student_id,
     s.student_name
-FROM Exam e
-LEFT JOIN Student s
-    USING(student_id)
-WHERE e.student_id NOT IN(
-    SELECT student_id
-    FROM cte
-    WHERE low = 1
-    OR high = 1
+from cte c
+left join student s
+    using (student_id)
+where c.student_id not in (
+    select
+        student_id
+    from cte 
+    where low = 1
+    or high = 1
 )
-ORDER BY 1
+order by 1
