@@ -6,7 +6,7 @@
 #         self.right = right
 class Solution:
     def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
-        self.leaf1, self.leaf2 = [], []
+        leaf1, leaf2 = [], []
         def helper(root, leaf):
             if not root:
                 return
@@ -14,6 +14,6 @@ class Solution:
             helper(root.left, leaf)
             helper(root.right, leaf)
             return
-        helper(root1, self.leaf1)
-        helper(root2, self.leaf2)
-        return self.leaf1 == self.leaf2
+        helper(root1, leaf1)
+        helper(root2, leaf2)
+        return leaf1 == leaf2
