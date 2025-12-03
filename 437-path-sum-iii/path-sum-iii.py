@@ -6,7 +6,6 @@
 #         self.right = right
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
-        
         def helper(root, sum):
             if not root:
                 return 0
