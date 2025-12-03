@@ -14,5 +14,4 @@ class Solution:
 
         if left and right:
             return root
-        elif left: return left
-        else: return right 
+        return left if left else right
