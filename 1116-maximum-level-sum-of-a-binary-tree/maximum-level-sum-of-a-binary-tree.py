@@ -8,7 +8,6 @@ class Solution:
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
         max, level, maxLevel = -float('inf'), 0, 0
         q = deque([root])
-        q.append(root)
         while q:
             level += 1
             sum = 0
