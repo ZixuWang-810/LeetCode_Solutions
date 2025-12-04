@@ -3,12 +3,11 @@ class Solution:
         res = []
         for a in asteroids:
             while res and res[-1] > 0 and a < 0:
-                if res[-1] + a < 0:
+                if res[-1]+a < 0:
                     res.pop()
-                elif res[-1] + a == 0: 
+                elif res[-1] + a == 0:
                     res.pop()
                     break
                 else: break
-            else:
-                res.append(a)
+            else: res.append(a)
         return res
