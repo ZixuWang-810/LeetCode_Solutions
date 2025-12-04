@@ -9,9 +9,8 @@ class Solution:
         def helper(rt, tar):
             if not rt or rt.val == tar:
                 return rt
-            left = helper(rt.left, tar)
-            right = helper(rt.right, tar)
-            if left or right:
-                return left or right
-            else: return None
+            if rt.val > tar:
+                return helper(rt.left, tar)
+            else:
+                return helper(rt.right, tar)
         return helper(root, val)
