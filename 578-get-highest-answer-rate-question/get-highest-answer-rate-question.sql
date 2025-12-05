@@ -1,14 +1,9 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    DISTINCT question_id AS survey_log
-FROM SurveyLog
-WHERE question_id = (
-    SELECT question_id
-    FROM SurveyLog
-    GROUP BY 1
-    ORDER BY (
-        SUM(CASE WHEN action = 'answer' THEN 1 ELSE 0 END)::DECIMAL / 
-        COUNT(*)::DECIMAL
-    )DESC, 1
-    LIMIT 1
-)
+select
+    question_id as survey_log
+from surveylog
+group by 1
+order by (sum(case when action = 'answer' then 1 else 0 end)::decimal / 
+sum(case when action = 'show' then 1 else 0 end)::decimal) desc,
+1 
+limit 1
