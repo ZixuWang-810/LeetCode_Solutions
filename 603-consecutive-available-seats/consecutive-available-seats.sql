@@ -1,15 +1,19 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
+with cte as (
+    select
         seat_id,
+        lag(free)over(
+            order by seat_id
+        ) prev,
         free,
-        LEAD(free) OVER(ORDER BY seat_id) AS prev,
-        LAG(free) OVER(ORDER BY seat_id) AS nxt
-    FROM Cinema
+        lead(free)over(
+            order by seat_id
+        ) nxt
+    from cinema 
 )
-SELECT 
+select
     seat_id
-FROM cte
-WHERE free = 1 AND nxt = 1 
-OR free = 1 AND prev = 1 
-ORDER BY seat_id
+from cte
+where prev =1 and free = 1
+or free = 1 and nxt = 1
+order by 1
