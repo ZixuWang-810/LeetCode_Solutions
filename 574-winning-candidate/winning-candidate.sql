@@ -1,12 +1,11 @@
 -- Write your PostgreSQL query statement below
-SELECT
+select
     name
-FROM Candidate
-WHERE id = (
-    SELECT
-        candidateId
-    FROM Vote
-    GROUP BY candidateId
-    ORDER BY COUNT(candidateId) DESC
-    LIMIT 1
+from candidate
+where id = (
+    select candidateId
+    from vote
+    group by 1
+    order by count(*) desc
+    limit 1
 )
