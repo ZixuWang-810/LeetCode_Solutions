@@ -1,32 +1,26 @@
 -- Write your PostgreSQL query statement below
-WITH cte AS (
-    SELECT
-        client_id,
-        driver_id,
-        status,
-        request_at
-    FROM Trips
-    WHERE client_id IN (
-        SELECT users_id
-        FROM Users
-        WHERE banned = 'No'
-        AND role = 'client'
+
+    select
+        request_at as Day,
+        round(
+            sum(case when status = 'cancelled_by_driver'
+            or status = 'cancelled_by_client' then 1 else 0 end)::decimal
+            / count(*)::decimal
+            ,2
+        ) as "Cancellation Rate"
+    from trips 
+    where request_at between '2013-10-01'
+        and '2013-10-03'
+    and client_id in (
+        select users_id
+        from users
+        where role = 'client'
+        and banned = 'No'
     )
-    AND driver_id IN (
-        SELECT users_id
-        FROM Users
-        WHERE banned = 'No'
-        AND role = 'driver'
+    and driver_id in (
+        select users_id
+        from users
+        where role = 'driver'
+        and banned = 'No'
     )
-    AND request_at >= '2013-10-01'
-    AND request_at <= '2013-10-03'
-)
-SELECT
-    request_at AS Day,
-    ROUND(
-        SUM(CASE WHEN status = 'completed' THEN 0 ELSE 1 END)::DECIMAL / 
-        COUNT(*)::DECIMAL
-        ,2
-    ) AS "Cancellation Rate"
-FROM cte
-GROUP BY 1
+    group by 1
