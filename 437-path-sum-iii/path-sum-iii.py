@@ -7,13 +7,11 @@
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
         def helper(rt, tar):
-            if not rt:
-                return 0
+            if not rt: return  0
             if rt.val == tar: count = 1
             else: count = 0
             count += helper(rt.left, tar - rt.val)
             count += helper(rt.right, tar - rt.val)
             return count
-
-        if not root:return 0
-        return helper(root, targetSum) + self.pathSum(root.left, targetSum) + self.pathSum(root.right, targetSum)
+        if not root: return 0
+        return helper(root, targetSum) + self.pathSum(root.left, targetSum ) + self.pathSum(root.right, targetSum)
