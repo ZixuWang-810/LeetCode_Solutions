@@ -5,9 +5,10 @@ class Solution:
         k = deque([x for x in rooms[0]])
         while k:
             room = k.popleft()
-            if room not in visited: visited.add(room)
+            if room not in visited: 
+                visited.add(room)
             for key in rooms[room]:
                 if key not in visited:
-                    visited.add(key)
                     k.append(key)
+                    visited.add(key)
         return len(visited) == len(rooms)
