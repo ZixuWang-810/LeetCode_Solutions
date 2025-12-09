@@ -7,18 +7,17 @@
 class Solution:
     def longestZigZag(self, root: Optional[TreeNode]) -> int:
         self.res = 0
-        def helper(rt, l_flag, length):
-
-            if not rt:
-                self.res = max(self.res, length)
-                return 
-            elif l_flag:
-                helper(rt.right, False, length+1)
+        def helper(rt, left, leng):
+            if not rt: 
+                self.res = max(self.res, leng) 
+                return
+            if left:
+                helper(rt.right, False, leng+1)
                 helper(rt.left, True, 0)
             else:
-                helper(rt.left, True, length+1)
+                helper(rt.left, True, leng+1)
                 helper(rt.right, False, 0)
-            return 
+            return
         helper(root.left, True, 0)
         helper(root.right, False, 0)
         return self.res
