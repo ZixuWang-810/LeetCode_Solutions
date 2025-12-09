@@ -1,5 +1,4 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    DISTINCT author_id AS id
-FROM Views 
-WHERE author_id = viewer_id
+select distinct author_id as id
+from views
+where viewer_id = author_id
