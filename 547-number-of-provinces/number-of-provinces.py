@@ -1,6 +1,7 @@
+## LeetCode accepted Code goes here
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        graph = collections.defaultdict(list)
+        graph = defaultdict(list)
         n = len(isConnected)
         for i in range(n):
             for j in range(i+1, n):
