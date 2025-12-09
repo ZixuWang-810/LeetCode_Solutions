@@ -4,5 +4,5 @@ select
     count(distinct product) num_sold,
     string_agg(distinct product, ',') products
 from activities
-group by sell_date
+group by 1
 order by 1
