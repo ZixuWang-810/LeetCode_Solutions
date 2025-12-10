@@ -1,33 +1,38 @@
 -- Write your PostgreSQL query statement below
-WITH cte1 AS (
-    SELECT
-        *,
-        ROW_NUMBER() OVER(
-            PARTITION BY company
-            ORDER BY salary, id
-        ) AS rn
-    FROM Employee
-)
-,cte2 AS (
-    SELECT 
+with cte1 as (
+    select
+        id,
         company,
-        MAX(rn) / 2 + 1 AS rn1,
-        CASE WHEN MAX(rn) % 2 = 0 THEN MAX(rn) / 2
-        ELSE 0 END AS rn2
-    FROM cte1
-    GROUP BY 1
+        salary,
+        row_number()over(
+            partition by company
+            order by salary
+        ) rn
+    from employee
+),
+cte2 as (
+    select
+        company,
+        max(rn) / 2 + 1 as m1,
+        case when max(rn) % 2 = 0 then max(rn) / 2 
+        else 0 end as m2
+    from cte1
+    group by 1
 )
-SELECT
-    id,
+select
+    id, 
     company,
     salary
-FROM cte1 
-WHERE (company, rn)  IN (
-    SELECT
+from cte1
+where (company, rn) in (
+    select
         company,
-        rn1
-    FROM cte2
+        m1
+    from cte2
 )
-OR (company, rn)  IN(
-    SELECT company, rn2 FROM cte2
+or (company, rn) in (
+    select
+        company,
+        m2
+    from cte2
 )
