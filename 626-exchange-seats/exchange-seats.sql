@@ -1,10 +1,8 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    CASE
-        WHEN id % 2 = 1 AND id = (SELECT COUNT(*) FROM Seat) THEN id
-        WHEN id % 2 = 0 THEN id - 1
-        ELSE id + 1
-    END AS id,
+select
+    case when id % 2 = 1 and id = (select count(*) from seat) then id 
+    when id % 2 = 0 then id -1
+    else id + 1 end as id,
     student
-FROM Seat
-ORDER BY 1
+from seat
+order by 1
