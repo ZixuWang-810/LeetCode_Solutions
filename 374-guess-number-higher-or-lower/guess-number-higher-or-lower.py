@@ -10,7 +10,7 @@ class Solution:
         left, right = 1, n
 
         while left <= right:
-            temp = left + (right - left) // 2
+            temp = (left + right) // 2
             if guess(temp) == -1:
                 right = temp - 1
             elif guess(temp) == 1:
