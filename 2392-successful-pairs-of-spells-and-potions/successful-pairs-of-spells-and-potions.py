@@ -10,7 +10,7 @@ class Solution:
                 mid = left + (right - left) // 2
                 if potions[mid] < tar:
                     left = mid + 1
-                elif potions[mid] >= tar:
+                else:
                     right = mid - 1
 
             if i * potions[mid] < success: res.append(n-mid-1)
