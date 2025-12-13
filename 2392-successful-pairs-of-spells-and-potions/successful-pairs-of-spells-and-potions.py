@@ -1,18 +1,16 @@
 class Solution:
     def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
         potions.sort()
-        res = []
         n = len(potions)
-        for i in spells:
-            tar = ceil(success / i)
-            left, right, mid = 0, n - 1, 0
-            while left <= right:
-                mid = left + (right - left) // 2
-                if potions[mid] < tar:
-                    left = mid + 1
-                else:
-                    right = mid - 1
-
-            if i * potions[mid] < success: res.append(n-mid-1)
-            else: res.append(n - mid)
+        res = []
+        
+        for spell in spells:
+            # Find minimum potion strength needed
+            min_potion = math.ceil(success / spell)
+            
+            # Find leftmost position >= min_potion
+            idx = bisect.bisect_left(potions, min_potion)
+            
+            res.append(n - idx)
+        
         return res
