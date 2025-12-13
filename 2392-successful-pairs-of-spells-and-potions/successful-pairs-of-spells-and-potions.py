@@ -4,7 +4,7 @@ class Solution:
         res = []
         n = len(potions)
         for i in spells:
-            tar = success // i if not success % i else (success//i + 1)
+            tar = ceil(success / i)
             left, right, mid = 0, n - 1, 0
             while left <= right:
                 mid = left + (right - left) // 2
