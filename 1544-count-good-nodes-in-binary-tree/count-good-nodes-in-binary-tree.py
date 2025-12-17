@@ -7,12 +7,13 @@
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         self.res = 0
-        def helper(rt, max):
+        max_v = float('-inf')
+        def helper(rt, max_v):
             if not rt: return
-            if rt.val >= max: 
+            if rt.val >= max_v:
                 self.res+=1
-                max = rt.val
-            helper(rt.left, max)
-            helper(rt.right, max)
-        helper(root, root.val)
+                max_v = rt.val
+            helper(rt.left, max_v)
+            helper(rt.right, max_v)
+        helper(root, max_v)
         return self.res
