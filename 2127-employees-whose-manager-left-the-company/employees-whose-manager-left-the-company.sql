@@ -1,10 +1,11 @@
 -- Write your PostgreSQL query statement below
-SELECT
-    e1.employee_id
-FROM Employees e1
-LEFT JOIN Employees e2
-    ON e1.manager_id = e2.employee_id
-WHERE e1.manager_id IS NOT NULL 
-AND e2.employee_id IS NULL
-AND e1.salary < 30000
-ORDER BY 1
+select
+    employee_id
+from employees 
+where manager_id is not null
+and manager_id not in (
+    select employee_id
+    from employees
+)
+and salary < 30000
+order by 1
