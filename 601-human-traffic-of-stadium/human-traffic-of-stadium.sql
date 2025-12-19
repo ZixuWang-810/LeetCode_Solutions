@@ -1,31 +1,24 @@
 -- Write your PostgreSQL query statement below
-with cte1 as (
-    select
-        id,
-        visit_date,
-        people
-    from stadium
-    where people >= 100
-),
-cte2 as (
-    select
+with cte as (
+    select 
         id,
         visit_date,
         people,
         id - row_number()over(
             order by id
-        )as grp
-    from cte1
+        ) as grp
+    from stadium
+    where people > 99
 )
 select
     id,
     visit_date,
     people
-from cte2
+from cte 
 where grp in (
-    select grp 
-    from cte2
-    group by 1
+    select grp
+    from cte 
+    group by grp
     having count(*) > 2
 )
 order by 2
