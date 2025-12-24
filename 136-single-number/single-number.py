@@ -1,8 +1,9 @@
-class Solution:
+class Solution(object):
     def singleNumber(self, nums: List[int]) -> int:
-        dic = {}
+        no_duplicate_list = []
         for i in nums:
-            if i not in dic: dic[i] = 1
-            else: dic[i] += 1
-        for i, j in dic.items():
-            if j == 1: return i
+            if i not in no_duplicate_list:
+                no_duplicate_list.append(i)
+            else:
+                no_duplicate_list.remove(i)
+        return no_duplicate_list.pop()
