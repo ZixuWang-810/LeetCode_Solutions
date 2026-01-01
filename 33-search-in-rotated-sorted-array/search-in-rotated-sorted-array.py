@@ -3,12 +3,12 @@ class Solution:
         # Step 1: Find pivot (smallest element)
         left, right = 0, len(nums) - 1
         
-        while left < right:
+        while left <= right:
             mid = (left + right) // 2
-            if nums[mid] > nums[right]:
+            if nums[mid] > nums[-1]:
                 left = mid + 1
             else:
-                right = mid
+                right = mid - 1
         
         pivot = left  # Index of smallest element
         
