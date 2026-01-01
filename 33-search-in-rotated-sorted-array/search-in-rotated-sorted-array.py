@@ -24,10 +24,7 @@ class Solution:
                     r = mid - 1
             return -1
         
-        # Step 3: Determine which half to search
         if target >= nums[pivot] and target <= nums[-1]:
-            # Target is in right half
             return binary_search(pivot, len(nums) - 1)
         else:
-            # Target is in left half
             return binary_search(0, pivot - 1)
