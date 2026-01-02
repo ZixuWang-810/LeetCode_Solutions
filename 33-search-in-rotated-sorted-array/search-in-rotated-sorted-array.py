@@ -24,7 +24,7 @@ class Solution:
                     r = mid - 1
             return -1
         
-        if target >= nums[pivot] and target <= nums[-1]:
-            return binary_search(pivot, len(nums) - 1)
+        res = binary_search(pivot, len(nums) - 1)
+        if res != -1: return res
         else:
             return binary_search(0, pivot - 1)
