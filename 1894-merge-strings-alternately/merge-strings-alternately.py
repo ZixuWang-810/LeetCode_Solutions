@@ -12,4 +12,4 @@ class Solution:
                 res+=word1[i]
                 res+=word2[i]
             res+=word2[n1:]
-        return ''.join(res)
+        return res
