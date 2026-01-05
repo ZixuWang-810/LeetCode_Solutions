@@ -3,4 +3,7 @@ class Solution:
          s1 = set(nums1)
          s2 = set(nums2)
          com = s1 & s2
-         return [list(s1 - com), list(s2-com)]
+         for i in com:
+            s1.remove(i)
+            s2.remove(i)
+         return [list(s1), list(s2)]
