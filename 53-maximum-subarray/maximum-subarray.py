@@ -5,5 +5,5 @@ class Solution:
             curr += nums[i]
             if curr < nums[i]:
                 curr = nums[i]
-            res = max(res, curr)
+            if curr > res: res = curr
         return res
