@@ -3,6 +3,7 @@ class Solution:
         res = curr = nums[0]
         for i in range(1, len(nums)):
             curr += nums[i]
-            curr = max(nums[i], curr)
+            if curr < nums[i]:
+                curr = nums[i]
             res = max(res, curr)
         return res
