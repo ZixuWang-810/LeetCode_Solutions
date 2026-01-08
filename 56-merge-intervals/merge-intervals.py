@@ -6,6 +6,5 @@ class Solution:
             if not res or res[-1][1] < i[0]:
                 res.append(i)
             else:
-                if res[-1][1] < i[1]:
-                    res[-1][1] = i[1]
+                res[-1][1]  = max(i[1], res[-1][1])
         return res
