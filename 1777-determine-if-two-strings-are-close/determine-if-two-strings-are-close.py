@@ -1,4 +1,8 @@
 class Solution:
     def closeStrings(self, word1: str, word2: str) -> bool:
-        c1, c2 = Counter(word1), Counter(word2)
-        return c1.keys() == c2.keys() and sorted(c1.values()) == sorted(c2.values())
+        dic1, dic2 = defaultdict(int), defaultdict(int)
+        for i in word1:
+            dic1[i] += 1
+        for i in word2:
+            dic2[i] += 1
+        return dic1.keys() == dic2.keys() and sorted(dic1.values()) == sorted(dic2.values())
