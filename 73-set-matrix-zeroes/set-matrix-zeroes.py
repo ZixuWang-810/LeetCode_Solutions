@@ -1,18 +1,40 @@
 class Solution:
     def setZeroes(self, matrix: List[List[int]]) -> None:
-        """
-        Do not return anything, modify matrix in-place instead.
-        """
-        r, c = set(), set()
-        m = len(matrix)
-        n = len(matrix[0])
-        for row in range(m):
-            for col in range(n):
-                if matrix[row][col] == 0:
-                    r.add(row)
-                    c.add(col)
-        zr = [0] * n
-        for i in r: matrix[i] = zr
-        for cc in c:
-            for j in range(m):
-                matrix[j][cc] = 0
+        m, n = len(matrix), len(matrix[0])
+        first_row_zero = False
+        first_col_zero = False
+        
+        # Step 1: Check if first row needs to be zeroed
+        for j in range(n):
+            if matrix[0][j] == 0:
+                first_row_zero = True
+                break
+        
+        # Step 2: Check if first column needs to be zeroed
+        for i in range(m):
+            if matrix[i][0] == 0:
+                first_col_zero = True
+                break
+        
+        # Step 3: Use first row/col as markers for other rows/cols
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0  # Mark row
+                    matrix[0][j] = 0  # Mark column
+        
+        # Step 4: Zero out cells based on markers (skip first row/col)
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+        
+        # Step 5: Handle first row
+        if first_row_zero:
+            for j in range(n):
+                matrix[0][j] = 0
+        
+        # Step 6: Handle first column
+        if first_col_zero:
+            for i in range(m):
+                matrix[i][0] = 0
