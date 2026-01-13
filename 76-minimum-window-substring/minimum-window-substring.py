@@ -1,46 +1,56 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if not s or not t or len(s) < len(t):
+        if not t or not s:
             return ""
-    
-        # Count characters needed from t
-        need = {}
-        for char in t:
-            need[char] = need.get(char, 0) + 1
-        
-        # Sliding window variables
-        left = 0
-        min_len = float('inf')
-        min_start = 0
-        required = len(need)  # Number of unique characters in t
-        formed = 0  # Number of unique characters in current window with desired frequency
-        
-        # Dictionary to keep count of characters in current window
-        window_counts = {}
-        
-        for right in range(len(s)):
-            # Add character from the right to the window
-            char = s[right]
-            window_counts[char] = window_counts.get(char, 0) + 1
-            
-            # If frequency of current character matches the desired count in t
-            if char in need and window_counts[char] == need[char]:
+        dict_t = Counter(t)
+        # Number of unique characters in t, which need to be present in the desired window.
+        required = len(dict_t)
+
+        # left and right pointer
+        l, r = 0, 0
+
+        # formed is used to keep track of how many unique characters in t are present in the current window in its desired frequency.
+
+        formed = 0
+
+        # Dictionary which keeps a count of all the unique characters in the current window.
+        window_counts = defaultdict(int)
+
+        # ans tuple of the form (window length, left, right)
+        ans = float("inf"), None, None
+
+        while r < len(s):
+
+            # Add one character from the right to the window
+            character = s[r]
+            window_counts[character] +=1
+
+            # If the frequency of the current character added equals to the desired count in t then increment the formed count by 1.
+            if (
+                character in dict_t
+                and window_counts[character] == dict_t[character]
+            ):
                 formed += 1
-            
-            # Try to contract the window from left
-            while left <= right and formed == required:
-                # Update minimum window if this one is smaller
-                if right - left + 1 < min_len:
-                    min_len = right - left + 1
-                    min_start = left
-                
-                # Remove character from left of window
-                left_char = s[left]
-                window_counts[left_char] -= 1
-                if left_char in need and window_counts[left_char] < need[left_char]:
+
+            # Try and contract the window till the point where it ceases to be 'desirable'.
+            while l <= r and formed == required:
+                character = s[l]
+
+                # Save the smallest window until now.
+                if r - l + 1 < ans[0]:
+                    ans = (r - l + 1, l, r)
+
+                # The character at the position pointed by the `left` pointer is no longer a part of the window.
+                window_counts[character] -= 1
+                if (
+                    character in dict_t
+                    and window_counts[character] < dict_t[character]
+                ):
                     formed -= 1
-                
-                left += 1
-        
-        # Return empty string if no valid window found
-        return "" if min_len == float('inf') else s[min_start:min_start + min_len]
+
+                # Move the left pointer ahead, this would help to look for a new window.
+                l += 1
+
+            # Keep expanding the window once we are done contracting.
+            r += 1
+        return "" if ans[0] == float("inf") else s[ans[1] : ans[2] + 1]
