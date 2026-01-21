@@ -1,18 +1,19 @@
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
 class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
-        dic = {}
-        inx = 0
+        # Use list instead of dict
+        values = []
+        
+        # Store all values
         while head:
-            dic[inx] = head.val
-            inx += 1
+            values.append(head.val)
             head = head.next
-        res = float('-inf')
-        n = len(dic)
-        for i in range(n//2):
-            res = max(res, (dic[i] + dic[n-i-1]))
-        return res
+        
+        # Find max twin sum
+        max_sum = 0
+        n = len(values)
+        
+        for i in range(n // 2):
+            twin_sum = values[i] + values[n - 1 - i]
+            max_sum = max(max_sum, twin_sum)
+        
+        return max_sum
