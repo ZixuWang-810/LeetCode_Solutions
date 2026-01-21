@@ -1,3 +1,4 @@
+## LeetCode accepted Code goes here
 class Solution:
     def maxOperations(self, nums: List[int], k: int) -> int:
         nums.sort()
