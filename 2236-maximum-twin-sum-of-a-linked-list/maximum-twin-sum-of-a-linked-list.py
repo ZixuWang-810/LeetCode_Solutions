@@ -1,19 +1,18 @@
 class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
-        # Use list instead of dict
-        values = []
-        
-        # Store all values
-        while head:
-            values.append(head.val)
+        slow = fast = head
+        res = 0
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        p_head = None
+        while slow:
+            nxt = slow.next
+            slow.next = p_head
+            p_head = slow
+            slow = nxt
+        while p_head:
+            res = max(res, p_head.val + head.val)
+            p_head = p_head.next
             head = head.next
-        
-        # Find max twin sum
-        max_sum = 0
-        n = len(values)
-        
-        for i in range(n // 2):
-            twin_sum = values[i] + values[n - 1 - i]
-            max_sum = max(max_sum, twin_sum)
-        
-        return max_sum
+        return res
