@@ -21,5 +21,10 @@ class Solution:
             cur = nxt
         first, second = head, prev
         while second.next:
-            first.next, first = second, first.next
-            second.next, second = first, second.next
+            tmp = first.next
+            first.next = second
+            first = tmp
+
+            tmp = second.next
+            second.next = first
+            second = tmp
