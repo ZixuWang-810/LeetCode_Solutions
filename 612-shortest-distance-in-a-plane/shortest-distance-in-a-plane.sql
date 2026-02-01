@@ -1,12 +1,8 @@
--- Write your PostgreSQL query statement below
 select
     round(
-        sqrt(power((p1.x - p2.x), 2) + power((p1.y - p2.y), 2))::decimal
+        min(sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y)))::decimal
         ,2
-    ) as shortest
-from point2d p1
-cross join point2d p2
-where p1.x != p2.x
-or p1.y != p2.y
-order by 1
-limit 1
+    ) as shortest 
+from point2d a
+cross join point2d b
+where a.x != b.x or a.y != b.y
